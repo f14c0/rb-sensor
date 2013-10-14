@@ -2,7 +2,7 @@ var noble = require('noble')
 var found = []
 var util = require ('util')
 var events = require('events')
-var self;
+var self
 
 var scanner =function (){
   self=this
@@ -12,7 +12,7 @@ var scanner =function (){
     var time=delay
     setTimeout(this.stop,1000*time)
     noble.startScanning();
-    console.log ("Scanning...");
+    console.log ("Scanning...")
     self.emit('scanning')
 
     noble.on('discover', function(peripheral) {
@@ -26,7 +26,7 @@ var scanner =function (){
 
   this.stop = function(){
     noble.stopScanning();
-    console.log("Scan stopped");
+    console.log("Scan stopped")
     console.log(found);
   }
 }

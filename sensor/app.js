@@ -1,11 +1,13 @@
 
 var express 	= require('express')
 var app 		= express()
-var http 		= require("http").createServer(app)
+var server 		= require("http").createServer(app)
 var mongoose 	= require('mongoose')
 var routes 		= require('./routes/devices')
 var _ 			= require("underscore")
-var io 			= require("socket.io").listen(http,{log:true})
+var io 			= require("socket.io").listen(server)
+var hola 		= "holat"
+routes.init(app)
 
 /*app config*/
 app.configure(function () {
@@ -14,14 +16,8 @@ app.configure(function () {
   	app.use(app.router)
 })
 
-//Specify the templates folder
-app.set("views", __dirname + "/templates")
-
-//template engine is Jade
-app.set("view engine", "jade");
-
 //Specify where the static content is
-app.use(express.static("static", __dirname + "/static"))
+app.use(express.static('static', __dirname + '/static'))
 
 /*Connecto to Mongodb*/
 mongoose.connect('mongodb://localhost/sensor',function(err, res){
@@ -33,14 +29,22 @@ mongoose.connect('mongodb://localhost/sensor',function(err, res){
 });
 
 /*HTTP Methoods*/
-app.get('/', routes.index)
+//app.get('/', routes.scanNow)
+/*
 app.get('/records', routes.getAll)
 app.post('/records', routes.addRecord)
 app.get('/records/number', routes.getCount)
-app.get('/realtime', routes.scanNow)
+app.get('/realtime', routes.scanNow)*/
+
+io.sockets.on('connection', function (socket) {
+    console.log('hola');
+    routes.socket = socket
+})
 
 
+/*Start server listening*/
+server.listen(3000)
 
 
-
-app.listen(process.env.PORT||3000);
+/*Export*/
+exports.io=io
