@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src='http://localhost:3000/socket.io/socket.io.js'></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+     <title>Super Awesome Chatroom6</title>
+
+
+    <script>
+      var socket = io.connect(document.location.href);
+      socket.on('bt', function(data){
+        alert(data)
+      })
+      $( document ).ready(function() {
+        socket.emit('my other event', { my: 'data' });
+      })
+      
+    </script>
+
+  </head>
+  <body>
+    <h1>Super Awesome Chatroom6</h1>
+    <div>
+      <div class="inlineBlock"><span>Your name:
+          <input type="text" value="Anonymous" id="name"></span><br>
+        <form id="messageForm">
+          <textarea rows="4" cols="50" placeholder="Share something!" maxlength="200" id="outgoingMessage"></textarea>
+          <input type="button" value="Share" disabled id="send">
+        </form>
+      </div>
+      <div class="inlineBlock topAligned"><b>Participants</b><br>
+        <div id="participants"></div>
+      </div>
+    </div>
+    <div id="messages"></div>
+  </body>
+</html>
