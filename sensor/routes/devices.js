@@ -22,16 +22,6 @@ exports.init =function (app) {
 
   app.get('/realtime', function (req, res){
     res.sendfile('./realtime.html')
-    /*bt.on('scanning',function(){
-    res.send('Scanning......1')
-    console.log("78978798")
-   })*/
-
-    /*bt.on('device_found',function(peripheral){
-    var btdevice ={MAC:peripheral.uuid}
-    io.socket.emit('bt',btdevice)
-   })
-   bt.start(25)*/
-
+    
   })
 }
