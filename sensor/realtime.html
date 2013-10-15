@@ -29,22 +29,15 @@
     				socket.on('bt',function(data){
     					var new_record = $('<tr><td>'+data+'</td></tr>')
     					$('#table_records').append(new_record)
-        				//alert(data)
-      				})
+        			})
     			})
     			//Stop Scan
     			$('#stop_scan').click(function(){
     				socket.emit('stop_scan')
     				$('#stop_scan').prop("disabled",true)
     			})
-    			
-			})
+  			})
     	</script>
-
-    	<script>
-    	 	//var socket = io.connect(document.location.href);
-      		
-        </script>
 	</head>
 
 	<body>
