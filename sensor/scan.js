@@ -7,12 +7,12 @@ var self
 var scanner =function (){
   self=this
   events.EventEmitter.call(this)
-
+  var timer
   this.start= function(delay){
     var time=delay
-    setTimeout(this.stop,1000*time)
+    timer=setTimeout(this.stop,1000*time)
     noble.startScanning();
-    console.log ("Scanning...")
+    console.log ("Scanning..."+ 'for '+ time + ' seconds.')
     self.emit('scanning')
 
     noble.on('discover', function(peripheral) {
@@ -25,9 +25,12 @@ var scanner =function (){
   }
 
   this.stop = function(){
+    if (timer) {
+      clearTimeout(timer);
+      timer = 0;
+    }
     noble.stopScanning();
     console.log("Scan stopped")
-    console.log(found);
   }
 }
 

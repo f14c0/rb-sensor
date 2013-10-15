@@ -1,13 +1,12 @@
 
 var express 	= require('express')
 var app 		= express()
-var server 		= require("http").createServer(app)
 var mongoose 	= require('mongoose')
 var routes 		= require('./routes/devices')
 var _ 			= require("underscore")
-var io 			= require("socket.io").listen(server)
-var hola 		= "holat"
-routes.init(app)
+var io      	= require('./lib/sockets.js').listen(app)
+
+/**/
 
 /*app config*/
 app.configure(function () {
@@ -28,23 +27,9 @@ mongoose.connect('mongodb://localhost/sensor',function(err, res){
 	}
 });
 
-/*HTTP Methoods*/
-//app.get('/', routes.scanNow)
-/*
-app.get('/records', routes.getAll)
-app.post('/records', routes.addRecord)
-app.get('/records/number', routes.getCount)
-app.get('/realtime', routes.scanNow)*/
-
-io.sockets.on('connection', function (socket) {
-    console.log('hola');
-    routes.socket = socket
-})
+/*Init Routes*/
+routes.init(app)
 
 
 /*Start server listening*/
-server.listen(3000)
 
-
-/*Export*/
-exports.io=io
