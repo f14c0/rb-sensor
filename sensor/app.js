@@ -29,7 +29,3 @@ mongoose.connect('mongodb://localhost/sensor',function(err, res){
 
 /*Init Routes*/
 routes.init(app)
-
-
-/*Start server listening*/
-
