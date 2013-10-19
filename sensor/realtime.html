@@ -1,63 +1,77 @@
 <!DOCTYPE html>
 <html>
-	<meta charset = 'utf-8'>
-	<head>
-		<title> Real time info</title>
-		<!--<link rel="stylesheet" href="/css/style.css">-->
-		<script src='http://localhost:3000/socket.io/socket.io.js'></script>
-    	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <meta charset = 'utf-8'>
+    <head>
+        <title> Real time info</title>
+        <script src='http://localhost:3000/socket.io/socket.io.js'></script>
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 
-    	<script type="text/javascript">
-    		$(document).ready(function() {
-    			// Timer
-    			function updateTime() {
-       				var now = new Date();
-        			$('#date').text(now.toString());        
-    			}
-      			updateTime();
-    			setInterval(updateTime, 1000); // 1 * 1000 miliseconds
+        <script type="text/javascript">
+            $(document).ready(function() {
+                // Timer
+                function updateTime() {
+                    var now = new Date();
+                    $('#date').text(now.toString())       
+                }
+                updateTime()
+                setInterval(updateTime, 1000); // 1 * 1000 miliseconds
 
-    			//Define websocket
-    			var socket
-    			//Start Scan
-    			$('#start_scan').click(function(){
-    				socket = io.connect(document.location.href)
-    				var time= $('#input_time').val()
-    				socket.emit('start_scan',time)
-    				$('#stop_scan').prop("disabled",false)
-    				//Handle event
-    				socket.on('bt',function(data){
-    					var new_record = $('<tr><td>'+data+'</td></tr>')
-    					$('#table_records').append(new_record)
-        			})
-    			})
-    			//Stop Scan
-    			$('#stop_scan').click(function(){
-    				socket.emit('stop_scan')
-    				$('#stop_scan').prop("disabled",true)
-    			})
-  			})
-    	</script>
-	</head>
+                //connect websocket               
+                socket = io.connect(document.location.href)
+                //Start Scan
+                $('#start_scan').click(function(){
+                    //Clear data
+                    $('.data_row').remove()                 
+                    //save time parameter
+                    var time= $('#input_time').val()
+                    socket.emit('start_scan',time)
 
-	<body>
-		<img src="/src/bt_logo.jpg">
-		<div>
-			<p id="date">9</p>
-			<button id ='start_scan'>Start Scan</button>
-			<input 	id ='input_time'type='number' min='0'>
-			<button id ='stop_scan' disabled >Stop Scan</button>
-			<button id ='clear_data' >Clear Data</button>
-		</div>
-		<h1> Real Time Data</h1>
-		<table id='table_records'>
-			<tr>
-				<th>MAC Address</th>
-				<th>Timestap</th>
-				<th>Name</th>
-				<th>Type</th>
-				<th>Rssi</th>
-			</tr>
-		</table>	
-	</body>
+                    //Enable stop scan button
+                    $('#stop_scan').prop("disabled",false)
+                    //Handle events
+                    socket.on('bt',function(data){
+                        var new_record = $('<tr class="data_row"><td>'+data+'</td></tr>')
+                        $('#table_records').append(new_record)
+                    })
+
+                    socket.on('scan_stopped', function(){
+                        $('#stop_scan').prop("disabled",true)
+                        socket.removeAllListeners()
+                    })
+                })
+
+                //Stop Scan
+                $('#stop_scan').click(function(){
+                    socket.emit('stop_scan')
+                    $('#stop_scan').prop("disabled",true)
+                })
+
+                $('#clear_data').click(function(){
+                    $('.data_row').remove()
+                })
+            })
+        </script>
+    </head>
+
+    <body>
+        <img src="/src/bt_logo.jpg">
+        <div>
+            <p id='count'>0</p>
+            <p id='date'></p>
+            <button id ='start_scan'>Start Scan</button>
+            <input  id ='input_time'type='number' min='0' value=1>
+            <button id ='stop_scan' disabled >Stop Scan</button>
+            <button id ='clear_data' >Clear Data</button>
+        </div>
+        <h1> Real Time Data</h1>
+        <table id='table_records'>
+            <tr>
+                <th>MAC Address</th>
+                <th>Timestap</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Rssi</th>
+            </tr>
+        </table>    
+    </body>
 </html>
