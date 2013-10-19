@@ -22,7 +22,8 @@ var scanner =function (){
   function btListener(peripheral){
     //console.log("DEBUG - scan.js: bt device found  event emited")
     console.log('DEBUG - scan.js: discover event has ' + _.size(noble.listeners('discover'))+ ' listeners')
-    self.emit('device_found',peripheral)
+    var device_found ={mac:peripheral.uuid,name:peripheral.advertisement.localName,timestamp:new Date().getTime(),rssi:peripheral.rssi}
+    self.emit('device_found',device_found)
     found.push(peripheral)
   }
 

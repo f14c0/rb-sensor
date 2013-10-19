@@ -16,12 +16,14 @@ module.exports.listen = function(app){
         socket.on('start_scan', function(time){
             //console.log("DEBUG - socket.js: star scan event emited")
             bt.start(time)
-    		bt.on('device_found',function (peripheral){
-                var btdevice =peripheral.uuid
+
+    		bt.on('device_found',function (device_found){
+                //var btdevice =peripheral.uuid
                 console.log('DEBUG - socket.js: device_found event has ' + _.size(bt.listeners('device_found'))+ ' listeners')
                 console.log("DEBUG - socket.js: bt device found  event emited")
-                socket.emit('bt',btdevice)
+                socket.emit('bt',device_found)
             })
+
             bt.on('scan_stopped', function(){
                 socket.emit('scan_stopped')
                 bt.removeAllListeners()

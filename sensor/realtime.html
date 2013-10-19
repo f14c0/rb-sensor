@@ -3,6 +3,7 @@
     <meta charset = 'utf-8'>
     <head>
         <title> Real time info</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
         <script src='http://localhost:3000/socket.io/socket.io.js'></script>
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 
@@ -29,9 +30,14 @@
                     //Enable stop scan button
                     $('#stop_scan').prop("disabled",false)
                     //Handle events
-                    socket.on('bt',function(data){
-                        var new_record = $('<tr class="data_row"><td>'+data+'</td></tr>')
-                        $('#table_records').append(new_record)
+                    socket.on('bt',function(device){
+                        var new_record = $('<tr class="data_row"><td>'+device.mac.toUpperCase()+'</td>'
+                            + '<td>'+device.timestamp+'</td><td>'+device.name+'</td>'
+                            + '<td>'+'Not defined'+'</td> <td>'+device.rssi+'</td> </tr>')
+                        new_record.hide()
+                        $('#table_records tr:last-child').after(new_record)
+                        new_record.fadeIn('fast')
+                        //$('#table_records').append(new_record)
                     })
 
                     socket.on('scan_stopped', function(){
@@ -56,10 +62,12 @@
     <body>
         <img src="/src/bt_logo.jpg">
         <div>
-            <p id='count'>0</p>
+            <p>Current time : </p>
             <p id='date'></p>
+        </div>
+        <div>
             <button id ='start_scan'>Start Scan</button>
-            <input  id ='input_time'type='number' min='0' value=1>
+            <input  id ='input_time'type='number' min='5'  placeholder='Input inquiry time seconds'>
             <button id ='stop_scan' disabled >Stop Scan</button>
             <button id ='clear_data' >Clear Data</button>
         </div>
