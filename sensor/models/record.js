@@ -14,6 +14,7 @@ var record_schema = new schema({
 })
 
 record_model = mongoose.model('Record',record_schema)
+module.exports.record_model= record_model
 
 var record = function(){
 
@@ -40,6 +41,11 @@ var record = function(){
 			}else{
 				console.log('ERROR: ' + err)
 			}
+		})
+	}
+	this.getAllRecords=function(callback){
+		record_model.find(function(err,records){
+			callback(err,records)
 		})
 	}
 

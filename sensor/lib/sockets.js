@@ -26,7 +26,9 @@ module.exports.listen = function(app){
                 //console.log('DEBUG - socket.js: device_found event has ' + _.size(bt.listeners('device_found'))+ ' listeners')
                 //console.log("DEBUG - socket.js: bt device found  event emited")
                 socket.emit('bt',device_found)
-                record_model.insertRecord(device_found.mac.toUpperCase(),'Phone',device_found.timestamp, 'test_id',device_found.rssi)
+                if(params.db_check){
+                    record_model.insertRecord(device_found.mac.toUpperCase(),'Phone',device_found.timestamp, 'test_id',device_found.rssi)
+                }
             })
 
             bt.on('scan_stopped', function(){
