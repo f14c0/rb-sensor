@@ -1,7 +1,10 @@
-var socketio    = require('socket.io')
-var scan        = require('../scan.js')
-var bt          = new scan() 
-var _           = require("underscore") 
+var socketio        = require('socket.io')
+var scan            = require('./scan.js')
+var bt              = new scan() 
+var _               = require("underscore")
+var record          = require('../models/record.js')
+var record_model    = new record()
+ 
 
 module.exports.listen = function(app){
 	server = require('http').createServer(app)
@@ -11,17 +14,19 @@ module.exports.listen = function(app){
 
     //realtime namespace
     realtime = io.of('/realtime')
+
     realtime.on('connection', function(socket){
         console.log('DEBUG: ' + socket.id + '  conected')
-        socket.on('start_scan', function(time){
+
+        socket.on('start_scan', function(params){
             //console.log("DEBUG - socket.js: star scan event emited")
-            bt.start(time)
+            bt.start(params.time)
 
     		bt.on('device_found',function (device_found){
-                //var btdevice =peripheral.uuid
-                console.log('DEBUG - socket.js: device_found event has ' + _.size(bt.listeners('device_found'))+ ' listeners')
-                console.log("DEBUG - socket.js: bt device found  event emited")
+                //console.log('DEBUG - socket.js: device_found event has ' + _.size(bt.listeners('device_found'))+ ' listeners')
+                //console.log("DEBUG - socket.js: bt device found  event emited")
                 socket.emit('bt',device_found)
+                record_model.insertRecord(device_found.mac.toUpperCase(),'Phone',device_found.timestamp, 'test_id',device_found.rssi)
             })
 
             bt.on('scan_stopped', function(){

@@ -19,14 +19,17 @@
 
                 //connect websocket               
                 socket = io.connect(document.location.href)
+
                 //Start Scan
                 $('#start_scan').click(function(){
                     //Clear data
-                    $('.data_row').remove()                 
-                    //save time parameter
-                    var time= $('#input_time').val()
-                    socket.emit('start_scan',time)
-
+                    $('.data_row').remove()   
+                    var counter = 0
+                                        
+                    var params={}
+                    params.time=$('#input_time').val()
+                    params.db_check=$('#database_check').prop('checked')
+                    socket.emit('start_scan',params)
                     //Enable stop scan button
                     $('#stop_scan').prop("disabled",false)
                     //Handle events
@@ -37,6 +40,8 @@
                         new_record.hide()
                         $('#table_records tr:last-child').after(new_record)
                         new_record.fadeIn('fast')
+                        counter+=1
+                        $('#counter').text(counter)
                         //$('#table_records').append(new_record)
                     })
 
@@ -55,6 +60,7 @@
                 $('#clear_data').click(function(){
                     $('.data_row').remove()
                 })
+
             })
         </script>
     </head>
@@ -70,8 +76,9 @@
             <input  id ='input_time'type='number' min='5'  placeholder='Input inquiry time seconds'>
             <button id ='stop_scan' disabled >Stop Scan</button>
             <button id ='clear_data' >Clear Data</button>
+            <input  id ='database_check' type="checkbox"> Save on Database</input> <br>
         </div>
-        <h1> Real Time Data</h1>
+        <h1> Real Time Data  ----  Devices Found: <span id='counter'>0</span></h1>
         <table id='table_records'>
             <tr>
                 <th>MAC Address</th>

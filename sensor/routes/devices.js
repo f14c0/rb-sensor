@@ -12,16 +12,11 @@ exports.init =function (app) {
     res.sendfile('./index.html');
   })
 
-  app.post('/records', function (req, res){
-    res.sendfile('./index.html');
-  })
-
   app.get('/records/number', function (req, res){
     res.send('Get count')
   })
 
   app.get('/realtime', function (req, res){
     res.sendfile('./realtime.html')
-    
   })
 }

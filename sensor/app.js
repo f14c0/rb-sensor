@@ -1,10 +1,11 @@
 
-var express 	= require('express')
-var app 		= express()
-var mongoose 	= require('mongoose')
-var routes 		= require('./routes/devices')
-var _ 			= require("underscore")
-var io      	= require('./lib/sockets.js').listen(app)
+var express 		= require('express')
+var app 			= express()
+var record		  	= require('./models/record.js')
+var record_model	= new record()
+var routes 			= require('./routes/devices.js')
+var _ 				= require("underscore")
+var io      		= require('./lib/sockets.js').listen(app)
 
 /**/
 
@@ -18,14 +19,8 @@ app.configure(function () {
 //Specify where the static content is
 app.use(express.static('static', __dirname + '/static'))
 
-/*Connecto to Mongodb*/
-mongoose.connect('mongodb://localhost/sensor',function(err, res){
-	if(!err){
-		console.log('Connected to databasase, Successfuly!')
-	}else{
-		console.log('ERROR:' + err);
-	}
-});
+/*Init Model*/
+record_model.connect()
 
 /*Init Routes*/
 routes.init(app)
