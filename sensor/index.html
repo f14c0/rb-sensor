@@ -11,7 +11,7 @@
     <script type="text/javascript">
     $(document).ready(function(){
       getConfig()
-      
+
       function getConfig(){
         $.ajax({
             url: '/config-file',
@@ -40,6 +40,24 @@
           var new_config={}
           $('#table_config :input').each(function(){
             new_config[$(this).attr('id')]= $(this).val()
+          })
+          var json_to_send = JSON.stringify(new_config)
+          $.ajax({
+            url:'/config-file',
+            type:'POST',
+            dataType:'json',
+            data:json_to_send,
+            contentType:'application/json',
+            cache:false,
+            timeout: 10000,
+            conplete:function(){
+              alert('complete')
+            },
+            success:function(){
+              alert('success')
+            },
+            error:function(){
+            }
           })
       })
     })

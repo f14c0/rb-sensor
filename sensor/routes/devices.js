@@ -40,5 +40,12 @@ exports.init =function (app) {
     res.end(JSON.stringify(config))
     console.log('conf requested')
   })
+
+  app.post('/config-file',function(req,res){
+    console.log('post to body')
+    res.writeHead(200, {'Content-Type': 'application/json'})
+    res.end()
+    console.log(req.body)
+  })
 }
 
