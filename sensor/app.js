@@ -5,6 +5,7 @@ var record		  	= require('./models/record.js')
 var record_model	= new record()
 var routes 			= require('./routes/devices.js')
 var io      		= require('./lib/sockets.js').listen(app)
+var fs 				= require('fs');
 
 /**/
 
@@ -23,3 +24,4 @@ record_model.connect()
 
 /*Init Routes*/
 routes.init(app)
+

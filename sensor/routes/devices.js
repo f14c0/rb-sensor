@@ -1,8 +1,9 @@
 //Routes---controllers
 //File: routes/devices.js
 
-var record        = require('../models/record.js')
-var record_model  = new record()
+var record          = require('../models/record.js')
+var record_model    = new record()
+var config          = require('../config.json')
 
 exports.init =function (app) {
 
@@ -32,4 +33,12 @@ exports.init =function (app) {
     })
   })
 
+  /*Config*/
+
+  app.get('/config-file',function(req,res){
+    res.writeHead(200, {'Content-Type': 'application/json'})
+    res.end(JSON.stringify(config))
+    console.log('conf requested')
+  })
 }
+

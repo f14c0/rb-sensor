@@ -3,38 +3,103 @@
   <head>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans">
     <link rel="stylesheet" href="/css/style.css">
-    <script src='http://localhost:3000/socket.io/socket.io.js'></script>
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.js"></script>
 
-     <title>Super Awesome Chatroom6</title>
+     <title>Raspberry Pi Bluetooth Sensor</title>
 
 
-    <script>
-      var socket = io.connect(document.location.href);
-      socket.on('bt', function(data){
-        alert(data)
-      })
-      $( document ).ready(function() {
-        socket.emit('my other event', { my: 'data' });
-      })
+    <script type="text/javascript">
+    $(document).ready(function(){
+      getConfig()
       
+      function getConfig(){
+        $.ajax({
+            url: '/config-file',
+            type: 'GET',
+            success: function (data) {
+                $.each(data, function(k, v) {
+                //display the key and value pair
+                  $('#'+k).val(v)
+                })
+            },
+            error: function (xhr, status, error) {alert('Error: ' + error.message)}
+        })
+      }
+
+      $('.input_data').prop('disabled',true)
+      $('#edit_config').click(function(){
+        $('.input_data').prop('disabled',false)
+        $('#save_config').fadeIn('fast')
+      })
+
+      $('#get_config').click(function(){
+        getConfig()
+      })
+
+      $('#save_config').click(function(){
+          var new_config={}
+          $('#table_config :input').each(function(){
+            new_config[$(this).attr('id')]= $(this).val()
+          })
+      })
+    })
     </script>
 
   </head>
   <body>
-    <h1>Super Awesome Chatroom6</h1>
+    <img src="/src/bt_logo.jpg">
+    <h1>Raspberry Pi Bluetooth Sensor</h1>
+    <div id="config">
+      <h2>General Config</h2>
+      <table id='table_config'>
+        <tr>
+          <td>Location ID</td>
+          <td> <input type='text' id='location_id'size='5'class='input_data'> </td>
+        </tr>
+        <tr>
+          <td>Group ID</td>
+          <td> <input type='text' id='group_id'size='5' class='input_data'> </td>
+        </tr>
+        <tr>
+          <td>Device Name</td>
+          <td> <input type='text' id='device_name' class='input_data'> </td>
+        </tr>
+        <tr>
+          <td>Device Description</td>
+          <td><textarea cols="40" id='device_description' rows="3"/ class='input_data'></textarea>  </td>
+        </tr>
+        <tr>
+          <td>Owner</td>
+          <td> <input type='text' id='owner' size='40' class='input_data'> </td>
+        </tr>
+        <tr>
+          <td>Lattitude</td>
+          <td> <input type='text' id='lattitude' class='input_data'></td>
+        </tr>
+        <tr>
+          <td>Longitude</td>
+          <td> <input type='text' id='longitude' class='input_data'></td>
+        </tr>
+        <tr>
+          <td>Altitude</td>
+          <td> <input type='text' id='altitude' class='input_data'> </td>
+        </tr>
+      </table>
+    </div> 
     <div>
-      <div class="inlineBlock"><span>Your name:
-          <input type="text" value="Anonymous" id="name"></span><br>
-        <form id="messageForm">
-          <textarea rows="4" cols="50" placeholder="Share something!" maxlength="200" id="outgoingMessage"></textarea>
-          <input type="button" value="Share" disabled id="send">
-        </form>
-      </div>
-      <div class="inlineBlock topAligned"><b>Participants</b><br>
-        <div id="participants"></div>
-      </div>
+      <button id ='get_config' >Get Config</button>
+      <button id ='edit_config' >Edit Config</button>
+      <button id ='save_config' hidden>Save Changes</button>
     </div>
-    <div id="messages"></div>
+    <br>
+      <div>
+        <table>
+          <tr> 
+            <td><a href='/'>Config</a></td>
+            <td><a href='realtime'>Real time</a></td>
+            <td><a href='/API/records'>API</a></td> 
+          </tr>
+        </table>
+      </div> 
   </body>
 </html>

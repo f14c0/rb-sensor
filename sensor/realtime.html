@@ -5,7 +5,7 @@
         <title> Real time info</title>
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script src='http://localhost:3000/socket.io/socket.io.js'></script>
-        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="js/jquery.js"></script>
 
         <script type="text/javascript">
             $(document).ready(function() {
@@ -87,6 +87,16 @@
                 <th>Type</th>
                 <th>Rssi</th>
             </tr>
-        </table>    
+        </table>   
+        <br>
+        <div>
+          <table>
+            <tr> 
+              <td><a href='/'>Config</a></td>
+              <td><a href='realtime'>Real time</a></td>
+              <td><a href='/API/records'>API</a></td> 
+            </tr>
+          </table>
+        </div> 
     </body>
 </html>

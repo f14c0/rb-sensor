@@ -6,6 +6,9 @@ body {
 
 textarea {
   resize: none;
+  border-width: 2px;
+  border-style: inset;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 .inlineBlock {
@@ -20,13 +23,13 @@ table {
 color: #333;
 font-family: Helvetica, Arial, sans-serif;
 width: 700px; 
-border-collapse: 
-collapse; border-spacing: 0; 
+border-collapse:collapse; 
+border-spacing: 0; 
 }
 
 td, th { 
 border: 1px solid transparent; /* No more visible border */
-height: 30px; 
+height: 30px;
 transition: all 0.3s;  /* Simple transition for hover effect */
 }
 
@@ -35,7 +38,7 @@ background: #DFDFDF;  /* Darken header a bit */
 font-weight: bold;
 }
 
-td {
+tr.data_row {
 background: #FAFAFA;
 text-align: center;
 }
@@ -53,8 +56,15 @@ div{
 	border: 1px solid transparent;
 	width: 700px;
 }
+
 h1{
 	background: #DFDFD0;
 	border: 1px solid transparent;
 	width: 700px;
 }
+
+
+a:link {text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:none;}
+a:active {text-decoration:none;}
