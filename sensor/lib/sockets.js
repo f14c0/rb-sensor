@@ -4,12 +4,12 @@ var bt              = new scan()
 var _               = require("underscore")
 var record          = require('../models/record.js')
 var record_model    = new record()
- 
+var config          = require('../config.json') 
 
 module.exports.listen = function(app){
 	server = require('http').createServer(app)
     io = socketio.listen(server)
-    io.set('log level',3);
+    io.set('log level',0);
     server.listen(3000)
 
     //realtime namespace
@@ -26,8 +26,9 @@ module.exports.listen = function(app){
                 //console.log('DEBUG - socket.js: device_found event has ' + _.size(bt.listeners('device_found'))+ ' listeners')
                 //console.log("DEBUG - socket.js: bt device found  event emited")
                 socket.emit('bt',device_found)
+                //Check id save in database is checked
                 if(params.db_check){
-                    record_model.insertRecord(device_found.mac.toUpperCase(),'Phone',device_found.timestamp, 'test_id',device_found.rssi)
+                    record_model.insertRecord(device_found.mac.toUpperCase(),device_found.device_class,device_found.timestamp,config.location_id,device_found.rssi)
                 }
             })
 

@@ -3,7 +3,8 @@
 
 var mongoose 	= require('mongoose')
 var schema		= mongoose.Schema
-var db_host		= 'mongodb://localhost/sensor'
+var db_host		= 'mongodb://f14c0:624691@paulo.mongohq.com:10090/records'
+var config      = require('../config.json')
 
 var record_schema = new schema({
 	mac : 			{type: 	String},
@@ -13,7 +14,7 @@ var record_schema = new schema({
 	rssi:     		{type: 	Number}	
 })
 
-record_model = mongoose.model('Record',record_schema)
+record_model = mongoose.model(config.location_id+'_record',record_schema)
 module.exports.record_model= record_model
 
 var record = function(){
