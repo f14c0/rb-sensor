@@ -1,9 +1,10 @@
 var noble     = require('noble')
-var found     = []
 var util      = require ('util')
 var events    = require('events')
 var self
 var _         = require("underscore")
+var f         = require('./filter.js')
+var filter    = new f()
 
 var scanner =function (){
   self=this
@@ -23,10 +24,17 @@ var scanner =function (){
     //console.log("DEBUG - scan.js: bt device found  event emited")
     console.log('DEBUG - scan.js: discover event has ' + _.size(noble.listeners('discover'))+ ' listeners')
     var mac =peripheral.uuid.macFormat(2).join(':')
-    var device_found ={mac:mac,name:peripheral.advertisement.localName,timestamp:new Date().getTime(),device_class:peripheral.advertisement.device_class,rssi:peripheral.rssi}
-    self.emit('device_found',device_found)
-    found.push(peripheral)
-  }
+    //filter device
+    filter_result=filter.filterHex(String(peripheral.advertisement.device_class))
+    if(filter_result.accepted){
+      var device_found ={mac:mac,
+                        name:peripheral.advertisement.localName,
+                        timestamp:new Date().getTime(),
+                        device_class:filter_result.major_class + " - " + filter_result.minor_class,
+                        rssi:peripheral.rssi}
+      self.emit('device_found',device_found)
+    }
+   }
 
   String.prototype.macFormat = function(n) {
     var ret = [];

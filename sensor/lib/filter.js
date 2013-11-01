@@ -1,5 +1,5 @@
-var _               = require("underscore")
-
+var _               = require('underscore')
+var accepted_classes= require('./accepted.json')
 var filter = function(){
 
 	this.filterHex = function(hex){
@@ -7,7 +7,7 @@ var filter = function(){
 		var binary = ""
 		binary= hexToBin(hex.substring(2,8))
 		console.log(binary)
-		getMajorClass(binary)
+		return checkAccept(binary)
 	}
 
 	function hexToBin(hex){
@@ -69,14 +69,14 @@ var filter = function(){
 		}
 		return res
 	}
-	function getMajorClass(binary){
+	function checkAccept(binary){
 		//based on https://www.bluetooth.org/en-us/specification/assigned-numbers/baseband
 		bits_major=binary.substring(11,16)
 		bits_minor=binary.substring(16,22)
 		console.log(bits_major + " " +  bits_minor)
 		major_class ='Undefinied'
 		minor_class ='Undefinied'
-
+		classes ={}
 		switch(bits_major){
 			case '00000':
 				major_class='Miscellaneous'
@@ -404,14 +404,20 @@ var filter = function(){
 				major_class='Reserved'
 			break
 		}
-		console.log(major_class + " -- " + minor_class)
-		return major_class
-	}
-	function checkAccept(binary){
-
+		classes.major_class=major_class
+		classes.minor_class=minor_class
+		//Check if accepted 
+		if(accepted_classes[String(major_class)]){
+			majc=String(major_class+'_minor')
+			minc =String(minor_class)
+			classes.accepted=accepted_classes[majc][minc]
+		}
+		
+		console.log(classes)
+		return classes
 	}
 }
-filter1= new filter()
-filter1.filterHex('0xe2251cL')
+//filter1= new filter()
+//filter1.filterHex('0x200404L')
 module.exports = filter
 
