@@ -2,6 +2,8 @@ body {
   padding: 3em;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1em;
+  margin:1 auto;
+  width: 1200px;
 }
 
 textarea {
@@ -52,9 +54,20 @@ tr:nth-child(odd) td { background: #FEFEFE; }
 tr td:hover { background: #666; color: #FFF; } /* Hover cell effect! */
 
 div{
-	background: #DFDFDF;
 	border: 1px solid transparent;
 	width: 700px;
+}
+
+div.config{
+  background-color: #DFDFDF;
+  float:left;
+}
+
+#map-canvas { 
+  float: right;
+  width:485px;
+  height: 428px; 
+  margin: 2px
 }
 
 h1{

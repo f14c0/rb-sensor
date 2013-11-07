@@ -3,7 +3,8 @@
 
 var record          = require('../models/record.js')
 var record_model    = new record()
-var config          = require('../config.json')
+var fs              = require('fs');
+var path            = require("path")
 
 exports.init =function (app) {
 
@@ -37,8 +38,8 @@ exports.init =function (app) {
 
   app.get('/config-file',function(req,res){
     res.writeHead(200, {'Content-Type': 'application/json'})
+    var config = JSON.parse(fs.readFileSync(path.join(__dirname,'../','config.json'), 'utf8'))
     res.end(JSON.stringify(config))
-    console.log('conf requested')
   })
 
   app.post('/config-file',function(req,res){

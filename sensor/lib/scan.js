@@ -13,7 +13,9 @@ var scanner =function (){
   var timer
   this.start= function(delay){
     var time=delay
-    timer=setTimeout(this.stop,1000*time)
+    if (delay>0){
+      timer=setTimeout(this.stop,1000*time)
+    }
     noble.startScanning()
     console.log ('DEBUG - Scan.js: *****Scanning...for '+ time + ' seconds.******')
     self.emit('scanning')
